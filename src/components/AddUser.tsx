@@ -1,4 +1,6 @@
 import { useDispatch } from "react-redux"
+import type { AppDispatch } from "../store/store"
+import type { FormEvent } from "react"
 import { Button } from "./ui/button"
 import {
   Dialog,
@@ -19,21 +21,23 @@ interface Iprops{
 }
 
 export function AddUser({open,setOpen}:Iprops) {
-    const dispatch=useDispatch()
+    const dispatch=useDispatch<AppDispatch>()
 
-    const handelSubmit=(e)=>{
+    const handelSubmit=(e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
+        const target=e.target as HTMLFormElement
         const formData=new FormData()
-        formData.append("name", e.target.name.value)
-        formData.append("description", e.target.description.value)
-        const files = e.target.image.files
-        console.log(files);
-        for (const file of files) {
-          formData.append(`Images`,file)
+        formData.append("name", target.name.value)
+        formData.append("description", target.description.value)
+        const files = (target.image as HTMLInputElement).files
+        if(files){
+          for (const file of files) {
+            formData.append(`Images`,file)
+          }
         }
         dispatch(addTodo(formData))
         setOpen(false)
-        e.target.reset()
+        target.reset()
     }
 
   return (

@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux"
+import type { AppDispatch } from "../store/store"
 import { Button } from "./ui/button"
 import {
   Dialog,
@@ -12,22 +13,23 @@ import { Field, FieldGroup } from "./ui/field"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { editTodo } from "../api/todo.api"
+import type { FormEvent } from "react"
 
 interface Iprops{
   open:boolean,
   setOpen:(value:boolean)=>void,
   name:string,
-  setName:string,
+  setName:(value:string)=>void,
   id:number| string,
   desc:string,
-  setDesc:string
+  setDesc:(value:string)=>void
 }
 
 
 export function EditUser({open,setOpen,id,name,desc,setName,setDesc}:Iprops) {
-    const dispatch=useDispatch()
+    const dispatch=useDispatch<AppDispatch>()
 
-    const handelSubmit=(e)=>{
+    const handelSubmit=(e: FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         const upUser={
             name:name,
@@ -36,7 +38,7 @@ export function EditUser({open,setOpen,id,name,desc,setName,setDesc}:Iprops) {
         }
         dispatch(editTodo(upUser))
         setOpen(false)
-        e.target.reset()
+        ;(e.target as HTMLFormElement).reset()
     }
 
   return (

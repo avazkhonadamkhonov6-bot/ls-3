@@ -1,10 +1,11 @@
-import React from 'react'
+import type { FormEvent } from 'react'
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 import { Field, FieldGroup } from './ui/field'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../store/store'
 import { addImg } from '../api/todo.api'
 
 interface Iprops{
@@ -14,25 +15,22 @@ interface Iprops{
 }
 
 export default function AddImg({open,setOpen,id}:Iprops) {
-     const dispatch=useDispatch()
-     console.log();
-     
+     const dispatch=useDispatch<AppDispatch>()
 
-
-    const handelSubmit=(e)=>{
+    const handelSubmit=(e:FormEvent<HTMLFormElement>)=>{
             e.preventDefault()
+            const target=e.target as HTMLFormElement
             const formData=new FormData()
-            const files = e.target.image.files
-            console.log(files);
-            
-            for (const file of files) {
-              formData.append(`Images`,file)
+            const files = (target.image as HTMLInputElement).files
+            if(files){
+              for (const file of files) {
+                formData.append(`Images`,file)
+              }
             }
             dispatch(addImg({id,formData}))
-            console.log(formData);
-            
+
             setOpen(false)
-            e.target.reset()
+            target.reset()
         }
 
   return (

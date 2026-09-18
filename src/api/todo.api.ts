@@ -45,7 +45,7 @@ export const editTodo=createAsyncThunk('todo/editTodo',async(upUser:IUser,{dispa
     }
 })
 
-export const addTodo=createAsyncThunk('todo/addTodo',async(formdata,{dispatch})=>{
+export const addTodo=createAsyncThunk('todo/addTodo',async(formdata:FormData,{dispatch})=>{
     try {
         await axios.post(url,formdata)
         dispatch(getTodo())
