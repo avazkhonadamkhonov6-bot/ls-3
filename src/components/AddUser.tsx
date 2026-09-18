@@ -27,8 +27,8 @@ export function AddUser({open,setOpen}:Iprops) {
         e.preventDefault()
         const target=e.target as HTMLFormElement
         const formData=new FormData()
-        formData.append("name", target.name.value)
-        formData.append("description", target.description.value)
+        formData.append("name", (target.elements.namedItem("name") as HTMLInputElement).value)
+        formData.append("description", (target.elements.namedItem("description") as HTMLInputElement).value)
         const files = (target.image as HTMLInputElement).files
         if(files){
           for (const file of files) {
